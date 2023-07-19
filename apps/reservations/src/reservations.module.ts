@@ -1,11 +1,41 @@
 import { Module } from '@nestjs/common';
 import { ReservationsController } from './reservations.controller';
 import { ReservationsService } from './reservations.service';
-import { LoggerModule } from '@app/common';
+import { AUTH_SERVICE, LoggerModule } from '@app/common';
 import { PrismaModule } from '@app/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
-  imports: [LoggerModule, PrismaModule],
+  imports: [
+    LoggerModule,
+    PrismaModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        KAFKA_BROKER: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
+      }),
+    }),
+    ClientsModule.registerAsync([
+      {
+        name: AUTH_SERVICE,
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              brokers: [configService.get('KAFKA_BROKER')],
+            },
+            consumer: {
+              groupId: 'auth-consumer',
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
+  ],
   controllers: [ReservationsController],
   providers: [ReservationsService],
 })
