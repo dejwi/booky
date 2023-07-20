@@ -4,17 +4,22 @@ import {
   Inject,
   Injectable,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AUTH_SERVICE } from '../constants';
 import { ClientKafka } from '@nestjs/microservices';
 import { Observable, catchError, map, of, tap } from 'rxjs';
-import { User } from '@prisma/client';
+import { UserWithRoles } from '../decorators';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   private readonly logger = new Logger(JwtAuthGuard.name);
 
-  constructor(@Inject(AUTH_SERVICE) private readonly authClient: ClientKafka) {}
+  constructor(
+    @Inject(AUTH_SERVICE) private readonly authClient: ClientKafka,
+    private readonly reflector: Reflector,
+  ) {}
 
   canActivate(
     ctx: ExecutionContext,
@@ -25,11 +30,21 @@ export class JwtAuthGuard implements CanActivate {
 
     if (!jwt) return false;
 
+    const roles = this.reflector.get<string[]>('roles', ctx.getHandler());
+
     return this.authClient
-      .send<User>('authenticate', { Authorization: jwt })
+      .send<UserWithRoles>('authenticate', { Authorization: jwt })
       .pipe(
-        tap((res) => {
-          ctx.switchToHttp().getRequest().user = res;
+        tap((user) => {
+          if (roles) {
+            const valid = roles.every((role) =>
+              user.roles.some(
+                ({ name }) => name.toLowerCase() === role.toLowerCase(),
+              ),
+            );
+            if (!valid) throw new UnauthorizedException('Missing permissions');
+          }
+          ctx.switchToHttp().getRequest().user = user;
         }),
         map(() => true),
         catchError((err) => {

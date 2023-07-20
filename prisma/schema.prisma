@@ -23,10 +23,10 @@ model Reservation {
 }
 
 model User {
-  id        String   @id @unique @default(uuid())
-  createdAt DateTime @default(now())
-  email     String
-  password  String
+  id         String   @id @unique @default(uuid())
+  createdAt  DateTime @default(now())
+  email      String
+  password   String
 
   roles        UserRole[]
   reservations Reservation[]
