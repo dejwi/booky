@@ -1,0 +1,62 @@
+steps:
+  # Reservations
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'europe-central2-docker.pkg.dev/booky-393518/reservations/production',
+      '-f',
+      'apps/reservatios/Dockerfile',
+      '.'
+    ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'europe-central2-docker.pkg.dev/booky-393518/reservations/production',
+    ]
+  # Auth
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'europe-central2-docker.pkg.dev/booky-393518/auth/production',
+      '-f',
+      'apps/reservatios/Dockerfile',
+      '.'
+    ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'europe-central2-docker.pkg.dev/booky-393518/auth/production',
+    ]
+  # Notifications
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'europe-central2-docker.pkg.dev/booky-393518/notifications/production',
+      '-f',
+      'apps/reservatios/Dockerfile',
+      '.'
+    ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'europe-central2-docker.pkg.dev/booky-393518/notifications/production',
+    ]
+  # Payments
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'europe-central2-docker.pkg.dev/booky-393518/payments/production',
+      '-f',
+      'apps/reservatios/Dockerfile',
+      '.'
+    ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'push',
+      'europe-central2-docker.pkg.dev/booky-393518/payments/production',
+    ]
+    
