@@ -6,7 +6,7 @@ steps:
       '-t',
       'europe-central2-docker.pkg.dev/booky-393518/reservations/production',
       '-f',
-      'apps/reservatios/Dockerfile',
+      'apps/reservations/Dockerfile',
       '.'
     ]
   - name: 'gcr.io/cloud-builders/docker'
@@ -21,7 +21,7 @@ steps:
       '-t',
       'europe-central2-docker.pkg.dev/booky-393518/auth/production',
       '-f',
-      'apps/reservatios/Dockerfile',
+      'apps/auth/Dockerfile',
       '.'
     ]
   - name: 'gcr.io/cloud-builders/docker'
@@ -36,7 +36,7 @@ steps:
       '-t',
       'europe-central2-docker.pkg.dev/booky-393518/notifications/production',
       '-f',
-      'apps/reservatios/Dockerfile',
+      'apps/notifications/Dockerfile',
       '.'
     ]
   - name: 'gcr.io/cloud-builders/docker'
@@ -51,7 +51,7 @@ steps:
       '-t',
       'europe-central2-docker.pkg.dev/booky-393518/payments/production',
       '-f',
-      'apps/reservatios/Dockerfile',
+      'apps/payments/Dockerfile',
       '.'
     ]
   - name: 'gcr.io/cloud-builders/docker'
