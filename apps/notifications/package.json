@@ -1,5 +1,5 @@
 {
-  "name": "@booky/payments",
+  "name": "@booky/notifications",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "stripe": "^12.13.0"
+    "nodemailer": "^6.9.4"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.8"
   }
 }
