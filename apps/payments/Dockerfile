@@ -26,12 +26,15 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 
+COPY prisma prisma
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 
 RUN npm install -g pnpm
 
 RUN pnpm install --prod
+
+RUN npx prisma generate
 
 COPY --from=development /usr/src/app/dist ./dist
 
