@@ -19,6 +19,26 @@ spec:
         name: reservations
         env:
           - name: PORT
-            value: '3000'
+            value: '3009'
+          - name: KAFKA_BROKERS
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: brokers
+          - name: KAFKA_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: apiKey
+          - name: KAFKA_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: apiSecret
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: database
+                key: url
         ports:
           - containerPort: 3000

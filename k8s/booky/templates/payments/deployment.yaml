@@ -17,3 +17,24 @@ spec:
       containers:
       - image: europe-central2-docker.pkg.dev/booky-393518/payments/production
         name: payments
+        env:
+          - name: KAFKA_BROKERS
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: brokers
+          - name: KAFKA_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: apiKey
+          - name: KAFKA_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: apiSecret
+          - name: STRIPE_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: stripe
+                key: secret

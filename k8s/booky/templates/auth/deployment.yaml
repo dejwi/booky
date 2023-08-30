@@ -20,5 +20,35 @@ spec:
         env:
           - name: PORT
             value: '3001'
+          - name: KAFKA_BROKERS
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: brokers
+          - name: KAFKA_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: apiKey
+          - name: KAFKA_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: kafka
+                key: apiSecret
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: database
+                key: url
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: jwt
+                key: secret
+          - name: JWT_EXPIRATION
+            valueFrom:
+              secretKeyRef:
+                name: jwt
+                key: expiration
         ports:
           - containerPort: 3001
