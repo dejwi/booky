@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reservations
+  name: reservations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reservations
+  template:
+    metadata:
+      labels:
+        app: reservations
+    spec:
+      containers:
+      - image: europe-central2-docker.pkg.dev/booky-393518/reservations/production
+        name: reservations
+        env:
+          - name: PORT
+            value: '3000'
+        ports:
+          - containerPort: 3000

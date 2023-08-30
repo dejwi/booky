@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: auth
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+      - image: europe-central2-docker.pkg.dev/booky-393518/auth/production
+        name: auth
+        env:
+          - name: PORT
+            value: '3001'
+        ports:
+          - containerPort: 3001
