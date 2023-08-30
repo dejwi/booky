@@ -19,7 +19,7 @@ RUN npx prisma generate
 
 RUN pnpm run build reservations
 
-FROM node:18-alpine3.16 AS production
+FROM node:20-alpine3.17 AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
