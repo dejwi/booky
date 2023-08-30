@@ -7,7 +7,7 @@ import { Response } from 'express';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

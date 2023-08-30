@@ -23,7 +23,7 @@ import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { Roles } from '@app/common/decorators/roles.decorator';
 
-@Controller()
+@Controller('reservations')
 export class ReservationsController implements OnModuleInit {
   constructor(
     private readonly reservationsService: ReservationsService,
