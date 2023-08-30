@@ -11,11 +11,13 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        KAFKA_BROKER: Joi.string().required(),
+        KAFKA_BROKERS: Joi.string().required(),
         GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),
         GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().required(),
         GOOGLE_OAUTH_REFRESH_TOKEN: Joi.string().required(),
         SMTP_USER: Joi.string().required(),
+        KAFKA_API_KEY: Joi.string().required(),
+        KAFKA_API_SECRET: Joi.string().required(),
       }),
     }),
   ],

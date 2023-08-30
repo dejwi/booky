@@ -19,8 +19,8 @@ export class ReservationsService {
     });
   }
 
-  findAll() {
-    this.prismaService.reservation.findMany({
+  async findAll() {
+    return await this.prismaService.reservation.findMany({
       include: { User: { select: { id: true, email: true } } },
     });
   }

@@ -12,10 +12,16 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: [configService.get('KAFKA_BROKER')],
+        brokers: configService.get<string>('KAFKA_BROKERS').split(','),
+        sasl: {
+          mechanism: 'plain',
+          username: configService.get('KAFKA_API_KEY'),
+          password: configService.get('KAFKA_API_SECRET'),
+        },
       },
       consumer: {
         groupId: 'notifications-consumer',
+        allowAutoTopicCreation: true,
       },
     },
   });

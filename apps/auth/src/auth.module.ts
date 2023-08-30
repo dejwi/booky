@@ -16,9 +16,12 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().required(),
-        KAFKA_BROKER: Joi.string().required(),
+        KAFKA_BROKERS: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION: Joi.number().required(),
+        KAFKA_API_KEY: Joi.string().required(),
+        KAFKA_API_SECRET: Joi.string().required(),
+        PORT: Joi.number().required(),
       }),
     }),
     JwtModule.registerAsync({

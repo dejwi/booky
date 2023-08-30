@@ -14,8 +14,11 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        KAFKA_BROKER: Joi.string().required(),
+        KAFKA_BROKERS: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
+        KAFKA_API_KEY: Joi.string().required(),
+        KAFKA_API_SECRET: Joi.string().required(),
+        PORT: Joi.number().required(),
       }),
     }),
     ClientsModule.registerAsync([
@@ -25,10 +28,16 @@ import * as Joi from 'joi';
           transport: Transport.KAFKA,
           options: {
             client: {
-              brokers: [configService.get('KAFKA_BROKER')],
+              brokers: configService.get<string>('KAFKA_BROKERS').split(','),
+              sasl: {
+                mechanism: 'plain',
+                username: configService.get('KAFKA_API_KEY'),
+                password: configService.get('KAFKA_API_SECRET'),
+              },
             },
             consumer: {
               groupId: 'auth-consumer',
+              allowAutoTopicCreation: true,
             },
           },
         }),
@@ -40,10 +49,16 @@ import * as Joi from 'joi';
           transport: Transport.KAFKA,
           options: {
             client: {
-              brokers: [configService.get('KAFKA_BROKER')],
+              brokers: configService.get<string>('KAFKA_BROKERS').split(','),
+              sasl: {
+                mechanism: 'plain',
+                username: configService.get('KAFKA_API_KEY'),
+                password: configService.get('KAFKA_API_SECRET'),
+              },
             },
             consumer: {
               groupId: 'payments-consumer',
+              allowAutoTopicCreation: true,
             },
           },
         }),

@@ -8,11 +8,19 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(PaymentsModule);
   const configService = app.get(ConfigService);
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {
-      client: { brokers: [configService.get('KAFKA_BROKER')] },
-      consumer: { groupId: 'payments-consumer' },
+      client: {
+        brokers: configService.get<string>('KAFKA_BROKERS').split(','),
+        sasl: {
+          mechanism: 'plain',
+          username: configService.get('KAFKA_API_KEY'),
+          password: configService.get('KAFKA_API_SECRET'),
+        },
+      },
+      consumer: { groupId: 'payments-consumer', allowAutoTopicCreation: true },
     },
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
