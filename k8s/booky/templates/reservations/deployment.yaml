@@ -19,7 +19,7 @@ spec:
         name: reservations
         env:
           - name: PORT
-            value: '3009'
+            value: '3000'
           - name: KAFKA_BROKERS
             valueFrom:
               secretKeyRef:
