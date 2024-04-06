@@ -13,11 +13,15 @@ async function bootstrap() {
     options: {
       client: {
         brokers: configService.get<string>('KAFKA_BROKERS').split(','),
-        sasl: {
-          mechanism: 'plain',
-          username: configService.get('KAFKA_API_KEY'),
-          password: configService.get('KAFKA_API_SECRET'),
-        },
+        sasl:
+          configService.get('KAFKA_API_KEY') &&
+          configService.get('KAFKA_API_SECRET')
+            ? {
+                mechanism: 'plain',
+                username: configService.get('KAFKA_API_KEY'),
+                password: configService.get('KAFKA_API_SECRET'),
+              }
+            : undefined,
       },
       consumer: {
         groupId: 'notifications-consumer',

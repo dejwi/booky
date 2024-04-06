@@ -14,8 +14,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       validationSchema: Joi.object({
         KAFKA_BROKERS: Joi.string().required(),
         STRIPE_SECRET_KEY: Joi.string().required(),
-        KAFKA_API_KEY: Joi.string().required(),
-        KAFKA_API_SECRET: Joi.string().required(),
+        KAFKA_API_KEY: Joi.string(),
+        KAFKA_API_SECRET: Joi.string(),
       }),
     }),
     ClientsModule.registerAsync([
@@ -25,11 +25,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           options: {
             client: {
               brokers: configService.get<string>('KAFKA_BROKERS').split(','),
-              sasl: {
-                mechanism: 'plain',
-                username: configService.get('KAFKA_API_KEY'),
-                password: configService.get('KAFKA_API_SECRET'),
-              },
+              sasl:
+                configService.get('KAFKA_API_KEY') &&
+                configService.get('KAFKA_API_SECRET')
+                  ? {
+                      mechanism: 'plain',
+                      username: configService.get('KAFKA_API_KEY'),
+                      password: configService.get('KAFKA_API_SECRET'),
+                    }
+                  : undefined,
             },
             consumer: {
               groupId: 'notifications-consumer',

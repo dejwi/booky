@@ -22,8 +22,8 @@ import * as Joi from 'joi';
       validationSchema: Joi.object({
         KAFKA_BROKERS: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
-        KAFKA_API_KEY: Joi.string().required(),
-        KAFKA_API_SECRET: Joi.string().required(),
+        KAFKA_API_KEY: Joi.string(),
+        KAFKA_API_SECRET: Joi.string(),
         PORT: Joi.number().required(),
       }),
     }),
@@ -35,11 +35,15 @@ import * as Joi from 'joi';
           options: {
             client: {
               brokers: configService.get<string>('KAFKA_BROKERS').split(','),
-              sasl: {
-                mechanism: 'plain',
-                username: configService.get('KAFKA_API_KEY'),
-                password: configService.get('KAFKA_API_SECRET'),
-              },
+              sasl:
+                configService.get('KAFKA_API_KEY') &&
+                configService.get('KAFKA_API_SECRET')
+                  ? {
+                      mechanism: 'plain',
+                      username: configService.get('KAFKA_API_KEY'),
+                      password: configService.get('KAFKA_API_SECRET'),
+                    }
+                  : undefined,
             },
             consumer: {
               groupId: 'auth-consumer',
@@ -56,11 +60,15 @@ import * as Joi from 'joi';
           options: {
             client: {
               brokers: configService.get<string>('KAFKA_BROKERS').split(','),
-              sasl: {
-                mechanism: 'plain',
-                username: configService.get('KAFKA_API_KEY'),
-                password: configService.get('KAFKA_API_SECRET'),
-              },
+              sasl:
+                configService.get('KAFKA_API_KEY') &&
+                configService.get('KAFKA_API_SECRET')
+                  ? {
+                      mechanism: 'plain',
+                      username: configService.get('KAFKA_API_KEY'),
+                      password: configService.get('KAFKA_API_SECRET'),
+                    }
+                  : undefined,
             },
             consumer: {
               groupId: 'payments-consumer',
