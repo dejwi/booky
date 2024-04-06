@@ -11,11 +11,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get()
-  getHello(): string {
-    return this.authService.getHello();
-  }
-
   @Post('register')
   async create(@Body() createUserDto: CreateUserDto) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

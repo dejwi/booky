@@ -20,10 +20,6 @@ export class AuthService {
     private readonly prismaService: PrismaService,
   ) {}
 
-  getHello(): string {
-    return 'Hello World!';
-  }
-
   async login(userId: string, res: Response) {
     const tokenPayload: TokenPayload = {
       userId,
